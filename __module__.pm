@@ -8,7 +8,8 @@ use Rex::Ext::ParamLookup;
 desc 'Set up gluster agent';
 task 'setup', sub { 
 
-	my $server = param_lookup "server";
+	my $server     = param_lookup "server";
+	my $mountpoint = param_lookup "mountpoint", "/mnt/gluster";
 
 	unless ($server) {
 		say "No server defined. Define server=gluster.my.domain.com";
@@ -25,7 +26,7 @@ task 'setup', sub {
  	};
 
 	# mount persistent with entry in /etc/fstab
-   	mount "$server:/gv0", "/mnt/gluster",
+   	mount "$server:/gv0", "$mountpoint",
 		ensure    => "persistent",
 		type      => "glusterfs",
 		options   => [qw/defaults _netdev/],
@@ -33,17 +34,20 @@ task 'setup', sub {
 			say "gluster point added to fstab"; 
 		};
 
-	file "/mnt/gluster",
+	file "$mountpoint",
 		ensure => "directory",
 		owner  => "root",
 		group  => "root";
+	
+	mount "$mountpoint";
 };
 
 
 desc 'Remove gluster client';
 task 'clean', sub {
 
-	my $server = param_lookup "server";
+	my $server     = param_lookup "server";
+	my $mountpoint = param_lookup "mountpoint", "/mnt/gluster";
 
 	if ( is_installed("glusterfs-client") ) {
 		remove package => "glusterfs-client";
@@ -54,6 +58,8 @@ task 'clean', sub {
 		exit 1;
 	};
 
-	mount "$server:/gv0", "/mnt/gluster",
+	mount "$server:/gv0", "$mountpoint",
 		ensure => "absent";
+
+	umount "$mountpoint";
 }
