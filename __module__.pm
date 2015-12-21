@@ -49,6 +49,7 @@ task 'clean', sub {
 
 	my $server     = param_lookup "server";
 	my $mountpoint = param_lookup "mountpoint", "/mnt/gluster";
+	my $volname    = param_lookup "volname", "gv0";
 
 	if ( is_installed("glusterfs-client") ) {
 		remove package => "glusterfs-client";
