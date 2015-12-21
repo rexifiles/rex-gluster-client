@@ -22,17 +22,23 @@ task 'setup', sub {
 		pkg "glusterfs-client",
 			ensure    => "latest",
 			on_change => sub { say "package was installed/updated"; };
-
-   		mount "$server:/gv0", "/mnt/gluster",
-          		ensure    => "persistent",
-          		type      => "glusterfs",
-          		options   => [qw/defaults 1 2/],
-          		on_change => sub { say "device mounted"; };
-   			# mount persistent with entry in /etc/fstab
-
  	};
 
+	# mount persistent with entry in /etc/fstab
+   	mount "$server:/gv0", "/mnt/gluster",
+		ensure    => "persistent",
+		type      => "glusterfs",
+		options   => [qw/defaults _netdev/],
+		on_change => sub { 
+			say "gluster point added to fstab"; 
+		};
+
+	file "/mnt/gluster",
+		ensure => "directory",
+		owner  => "root",
+		group  => "root";
 };
+
 
 desc 'Remove gluster client';
 task 'clean', sub {
@@ -50,6 +56,4 @@ task 'clean', sub {
 
 	mount "$server:/gv0", "/mnt/gluster",
 		ensure => "absent";
-
-
 }
