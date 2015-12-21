@@ -10,6 +10,7 @@ task 'setup', sub {
 
 	my $server     = param_lookup "server";
 	my $mountpoint = param_lookup "mountpoint", "/mnt/gluster";
+	my $volname    = param_lookup "volname", "gv0";
 
 	unless ($server) {
 		say "No server defined. Define server=gluster.my.domain.com";
@@ -26,7 +27,7 @@ task 'setup', sub {
  	};
 
 	# mount persistent with entry in /etc/fstab
-   	mount "$server:/gv0", "$mountpoint",
+   	mount "$server:$volname", "$mountpoint",
 		ensure    => "persistent",
 		type      => "glusterfs",
 		options   => [qw/defaults _netdev/],
@@ -58,7 +59,7 @@ task 'clean', sub {
 		exit 1;
 	};
 
-	mount "$server:/gv0", "$mountpoint",
+	mount "$server:$volname", "$mountpoint",
 		ensure => "absent";
 
 	umount "$mountpoint";
