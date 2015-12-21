@@ -1,0 +1,6 @@
+Name: Rex::Gluster::Client
+Description: Installs the gluster client, and configures to a server and mounts under /mnt/gluster
+Author: xarlos <xarlos@xarlos.me>
+License: Apache 2.0
+Require:
+  - Rex::Ext::ParamLookup
