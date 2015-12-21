@@ -51,10 +51,6 @@ task 'clean', sub {
 	my $mountpoint = param_lookup "mountpoint", "/mnt/gluster";
 	my $volname    = param_lookup "volname", "gv0";
 
-	if ( is_installed("glusterfs-client") ) {
-		remove package => "glusterfs-client";
-	};
-
 	unless ($server) {
 		say "No server defined. Define server=gluster.my.domain.com";
 		exit 1;
@@ -64,4 +60,9 @@ task 'clean', sub {
 		ensure => "absent";
 
 	umount "$mountpoint";
+
+	if ( is_installed("glusterfs-client") ) {
+		remove package => "glusterfs-client";
+	};
+
 }
