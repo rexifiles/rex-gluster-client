@@ -10,7 +10,7 @@ task 'setup', sub {
 
 	my $server     = param_lookup "server";
 	my $mountpoint = param_lookup "mountpoint", "/mnt/share";
-	my $volname    = param_lookup "volname", "gv0";
+	my $volname    = param_lookup "volname", "share"; # or as per example: ;
 
 	unless ($server) {
 		say "No server defined. Define server=gluster.my.domain.com";
@@ -50,7 +50,7 @@ task 'clean', sub {
 
 	my $server     = param_lookup "server";
 	my $mountpoint = param_lookup "mountpoint", "/mnt/share";
-	my $volname    = param_lookup "volname", "gv0";
+	my $volname    = param_lookup "volname", "share"; # or as per example: gv0
 
 	unless ($server) {
 		say "No server defined. Define server=gluster.my.domain.com";
