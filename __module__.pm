@@ -57,7 +57,7 @@ task 'clean', sub {
 		exit 1;
 	};
 
-	mount "$server:$volname", "$mountpoint",
+	mount "${server}:${volname}", "$mountpoint",
 		ensure => "absent";
 
 	umount "$mountpoint";
