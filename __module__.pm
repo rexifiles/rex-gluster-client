@@ -29,7 +29,8 @@ task 'setup', sub {
 	file "$mountpoint",
 		ensure => "directory",
 		owner  => "root",
-		group  => "root";
+		group  => "root",
+		mode   => 777;
 	
 	# mount persistent with entry in /etc/fstab
    	mount "$server:$volname", "$mountpoint",
